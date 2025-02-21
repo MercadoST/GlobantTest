@@ -42,10 +42,18 @@ export class UserService {
     if (filter) {
       return this.userRepository
         .createQueryBuilder('user')
-        .where('user.name ILIKE :filter', { filter: `%${filter}%` })
+        .leftJoinAndSelect('user.profile', 'profile')
+        .where(
+          'user.name ILIKE :filter OR user.email ILIKE :filter OR profile.profileName ILIKE :filter',
+          {
+            filter: `%${filter}%`,
+          },
+        )
         .getMany();
     }
-    return await this.userRepository.find();
+    return this.userRepository.find({
+      relations: ['profile'],
+    });
   }
 
   async findOne(id: string): Promise<User> {

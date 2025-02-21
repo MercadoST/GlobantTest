@@ -20,7 +20,18 @@ export class ProfileService {
     return this.profileRepository.save(profile);
   }
 
-  async findAll(): Promise<Profile[]> {
+  async findAll(filter?: string): Promise<Profile[]> {
+    if (filter) {
+      return this.profileRepository
+        .createQueryBuilder('profile')
+        .where(
+          'profile.profileName ILIKE :filter OR profile.code ILIKE :filter',
+          {
+            filter: `%${filter}%`,
+          },
+        )
+        .getMany();
+    }
     return this.profileRepository.find();
   }
 
