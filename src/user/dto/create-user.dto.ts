@@ -3,21 +3,21 @@ import {
   IsEmail,
   IsInt,
   IsNotEmpty,
+  IsOptional,
   IsString,
+  IsUUID,
   Min,
   ValidateNested,
 } from 'class-validator';
-
-class ProfileDto {
-  @IsString()
-  code: string;
-
-  @IsString()
-  profileName: string;
-}
+import { CreateProfileDto } from 'src/profile/dto/create-profile.dto';
 
 export class CreateUserDto {
+  @IsUUID()
+  @IsOptional()
+  id?: string;
+
   @IsEmail()
+  @IsNotEmpty()
   email: string;
 
   @IsString()
@@ -29,6 +29,6 @@ export class CreateUserDto {
   age: number;
 
   @ValidateNested()
-  @Type(() => ProfileDto)
-  profile: ProfileDto;
+  @Type(() => CreateProfileDto)
+  profile: CreateProfileDto;
 }

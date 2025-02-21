@@ -3,7 +3,7 @@ version: '3.8'
 services:
   # Servicio de la base de datos PostgreSQL
   db:
-    image: postgres:14.3
+    image: postgres:15
     container_name: postgres_nest
     restart: always
     environment:
